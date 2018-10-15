@@ -46,12 +46,12 @@
 			guessesLeft=9;
 			guessSoFar="";
 			//audio.stop();
-			alert("Hooray you win -- as expected you guesses what I was thinking about: "+computerGuess);
+			alert("Hooray you win -- as expected you guessed what I was thinking about: "+computerGuess);
 		}
 		else{
 			guessesLeft--;
 			guessSoFar+=userGuess.toLowerCase();
-			if(guessesLeft<0){
+			if(guessesLeft<1){
 				//bummer -- loss
 				losses++;
 				guessesLeft=9;
