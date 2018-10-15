@@ -1,74 +1,85 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>The Psychic Game</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <h1 style="color:blue;">Use your inner zen to connect with me and guess what letter I am thinking about.</h1>
     <h1>Press a key to start; you have 9 guesses, but really it should only take one...</h1>
-  
+
     <div id="Win">Wins: 0</div>
     <div id="Lose">Losses: 0</div>
     <div id="Left">Guesses left: 9</div>
     <div id="soFar">Your Guesses so far:</div>
+    <p></p>
+    <form action="/action_page.php" method="get">
+        <input type="checkbox" id="Play" checked> Play sound during game.<br>
+    </form>
 
     <script>
-	// declare vars
-	var wins=0;
-	var losses=0;
-	var guessesLeft=9;
-	var guessSoFar="";
-	var computerGuess="";
-	var possibleGuesses="abcdefghijklmnopqrstuvwxyz";
-	document.onkeyup = function(event) {
-		// Connect variables
-		var userGuess = event.key;
-		var winElement = document.getElementById('Win');
-		var loseElement = document.getElementById('Lose');
-		var leftElement = document.getElementById('Left');
-		var soFarElement = document.getElementById('soFar');
+        // declare vars
+        var wins = 0;
+        var losses = 0;
+        var guessesLeft = 9;
+        var guessSoFar = "";
+        var computerGuess = "";
+        var possibleGuesses = "abcdefghijklmnopqrstuvwxyz";
+        var audio = new Audio('Twilight-zone-song.mp3');
+        document.onkeyup = function(event) {
+            // Connect variables
+            var userGuess = event.key;
+            var winElement = document.getElementById('Win');
+            var loseElement = document.getElementById('Lose');
+            var leftElement = document.getElementById('Left');
+            var soFarElement = document.getElementById('soFar');
+            var playElement = document.getElementById('Play');
+            // start of game
+            if (guessesLeft === 9) {
+                // start of game, so pick a key
+                var random = Math.floor(Math.random() * possibleGuesses.length);
+                computerGuess = possibleGuesses.charAt(random);
+                if (playElement.checked) {
+                    audio.play();
+                }
+            }
+            if (!playElement.checked) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
 
-		// start of game
-		if(guessesLeft===9){
-			// start of game, so pick a key
-			var random=Math.floor(Math.random()*possibleGuesses.length);
-			computerGuess=possibleGuesses.charAt(random);
-			//var audio = new Audio('Twilight-zone-song.mp3');
-			//audio.play();
-			//audio.stop();
-		}
-
-		// logic
-		if(userGuess.toLowerCase()===computerGuess){
-			// hooray, game over
-			wins++;
-			guessesLeft=9;
-			guessSoFar="";
-			//audio.stop();
-			alert("Hooray you win -- as expected you guessed what I was thinking about: "+computerGuess);
-		}
-		else{
-			guessesLeft--;
-			guessSoFar+=userGuess.toLowerCase();
-			if(guessesLeft<1){
-				//bummer -- loss
-				losses++;
-				guessesLeft=9;
-				guessSoFar="";
-				//audio.stop();
-				alert("On no -- what happened? I was thinking of: " + computerGuess);
-			}
+            // logic
+            if (userGuess.toLowerCase() === computerGuess) {
+                // hooray, game over
+                wins++;
+                guessesLeft = 9;
+                guessSoFar = "";
+                audio.pause();
+                audio.currentTime = 0;
+                alert("Hooray you win -- as expected you guessed what I was thinking about: " + computerGuess);
+            } else {
+                guessesLeft--;
+                guessSoFar += userGuess.toLowerCase();
+                if (guessesLeft < 1) {
+                    //bummer -- loss
+                    losses++;
+                    guessesLeft = 9;
+                    guessSoFar = "";
+                    audio.pause();
+                    audio.currentTime = 0;
+                    alert("On no -- what happened? I was thinking of: " + computerGuess);
+                }
+            }
+            // Output results
+            winElement.textContent = "Wins: " + wins;
+            loseElement.textContent = "Losses: " + losses;
+            leftElement.textContent = "Guesses left: " + guessesLeft;
+            soFarElement.textContent = "Your Guesses so far: " + guessSoFar;
         }
-		// Output results
-		winElement.textContent = "Wins: "+wins;
-		loseElement.textContent = "Losses: "+losses;
-		leftElement.textContent = "Guesses left: "+guessesLeft;
-		soFarElement.textContent = "Your Guesses so far: "+guessSoFar;
-    }
-
     </script>
-    
-  </body>
-</html>
 
+</body>
+
+</html>
