@@ -1,17 +1,74 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
-	<meta charset="UTF-8">
-	<title>Psychic Game</title>
-	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-</head>
-<body>
- 
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>The Psychic Game</title>
+  </head>
+  <body>
+    <h1 style="color:blue;">Use your inner zen to connect with me and guess what letter I am thinking about.</h1>
+    <h1>Press a key to start; you have 9 chances, but really it should only take one...</h1>
+  
+    <div id="Win">Wins: 0</div>
+    <div id="Lose">Losses: 0</div>
+    <div id="Left">Guesses left: 9</div>
+    <div id="soFar">Your Guesses so far:</div>
+
+    <script>
+	// declare vars
+	var wins=0;
+	var losses=0;
+	var guessesLeft=9;
+	var guessSoFar="";
+	var computerGuess="";
+	var possibleGuesses="abcdefghijklmnopqrstuvwxyz";
+	document.onkeyup = function(event) {
+		// Connect variables
+		var userGuess = event.key;
+		var winElement = document.getElementById('Win');
+		var loseElement = document.getElementById('Lose');
+		var leftElement = document.getElementById('Left');
+		var soFarElement = document.getElementById('soFar');
+
+		// start of game
+		if(guessesLeft===9){
+			// start of game, so pick a key
+			var random=Math.floor(Math.random()*possibleGuesses.length);
+			computerGuess=possibleGuesses.charAt(random);
+			//var audio = new Audio('Twilight-zone-song.mp3');
+			//audio.play();
+			//audio.stop();
+		}
+
+		// logic
+		if(userGuess.toLowerCase()===computerGuess){
+			// hooray, game over
+			wins++;
+			guessesLeft=9;
+			guessSoFar="";
+			//audio.stop();
+			alert("Hooray you win -- as expected you guesses what I was thinking about: "+computerGuess);
+		}
+		else{
+			guessesLeft--;
+			guessSoFar+=userGuess.toLowerCase();
+			if(guessesLeft<0){
+				//bummer -- loss
+				losses++;
+				guessesLeft=9;
+				guessSoFar="";
+				//audio.stop();
+				alert("On no -- what happened? I was thinking of: " + computerGuess);
+			}
+        }
+		// Output results
+		winElement.textContent = "Wins: "+wins;
+		loseElement.textContent = "Losses: "+losses;
+		leftElement.textContent = "Guesses left: "+guessesLeft;
+		soFarElement.textContent = "Your Guesses so far: "+guessSoFar;
+    }
+
+    </script>
+    
+  </body>
 </html>
 
